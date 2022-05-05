@@ -7,6 +7,7 @@ import java.net.*;
 import org.joda.time.LocalDate;
 
 // ----------------------------------------
+// https://github.com/cdelargy/BitcoinRPCClient
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,16 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+// -------------
+// other RPC java implementations
+// https://github.com/clanie/bitcoind-client
+// https://github.com/johannbarbie/BitcoindClient4J
+// https://github.com/priiduneemre/btcd-cli4j
+// https://github.com/SulacoSoft/BitcoindConnector4J
+// https://github.com/nitinsurana/Litecoin-Bitcoin-RPC-Java-Connector
+
+// earlier links
 
 //https://software.dzhuvinov.com/json-rpc-2.0-client.html
 //
@@ -64,6 +75,10 @@ public class App {
 		//json.put("id", id);
 		//json.put("method", method);
 		json.put("id", UUID.randomUUID().toString());
+		//
+		// getblockcount IS an RPC method
+		// visit https://github.com/cdelargy/BitcoinRPCClient to see this implementation
+		//
 		json.put("method", "getblockcount");
 		/***
 		if (null != params) {
@@ -119,8 +134,6 @@ public class App {
 		System.out.println();
 		System.out.println();
 		System.out.println();
-
-
 
 		System.out.println(getLocalCurrentDate());
 	}
