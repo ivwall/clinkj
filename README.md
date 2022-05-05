@@ -14,3 +14,11 @@ Apache Maven 3.6.3
 
 
 dateUtils offers a working POM.xml that creates a "full" jar
+
+
+cd clinkj/dateUtils
+
+mvn package
+
+java -jar target/dateutils-jar-with-dependencies.jar 
+
