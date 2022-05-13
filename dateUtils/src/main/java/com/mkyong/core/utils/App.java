@@ -46,8 +46,6 @@ import org.json.simple.parser.JSONParser;
 //https://github.com/ConsensusJ/consensusj
 //https://github.com/priiduneemre/btcd-cli4j
 //https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/04_4__Interlude_Using_Curl.md
-//
-//
 
 public class App {
 
@@ -75,18 +73,20 @@ public class App {
 		//json.put("id", id);
 		//json.put("method", method);
 		json.put("id", UUID.randomUUID().toString());
-		//
 		// getblockcount IS an RPC method
 		// visit https://github.com/cdelargy/BitcoinRPCClient to see this implementation
-		//
 		json.put("method", "getblockcount");
-		/***
+		/*****
+		//List<String> params = ["100000"];
+		String[] params = { "100000" };
 		if (null != params) {
 			JSONArray array = new JSONArray();
-			array.addAll(params);
+			// Arrays.asList(params)
+			//array.addAll(params);
+			array.addAll(Arrays.asList(params));
 			json.put("params", params);
 		}
-		***/
+		*/
 		JSONObject responseJsonObj = null;
 		try {
 			//httpclient.getCredentialsProvider().setCredentials(new AuthScope("localhost", 8332),
@@ -111,25 +111,141 @@ public class App {
 			JSONParser parser = new JSONParser();
 			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (org.json.simple.parser.ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		/*** 
 		} finally {
 			// When HttpClient instance is no longer needed,
 			// shut down the connection manager to ensure
 			// immediate deallocation of all system resources
 			httpclient.getConnectionManager().shutdown();
+		***/
 		}
 		Long blockcount = (Long)responseJsonObj.get("result");
 		System.out.println(" blockcount = "+blockcount.toString() );
+
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
+		json.put("method", "getdifficulty");
+		json.put("id", UUID.randomUUID().toString());
+		try {
+			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
+					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
+			StringEntity myEntity = new StringEntity(json.toJSONString());
+			System.out.println(json.toString());
+			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
+			httppost.setEntity(myEntity);
+			System.out.println("executing request" + httppost.getRequestLine());
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+
+			System.out.println("----------------------------------------");
+			System.out.println(response.getStatusLine());
+			if (entity != null) {
+				System.out.println("Response content length: " + entity.getContentLength());
+				// System.out.println(EntityUtils.toString(entity));
+			}
+			JSONParser parser = new JSONParser();
+			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			//httpclient.getConnectionManager().shutdown();
+		}
+		Double difficulty = (Double)responseJsonObj.get("result");
+		//System.out.println("class "+((Class)responseJsonObj.get("result")).toString());
+		System.out.println(" getdifficulty = "+difficulty.toString() );
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
+
+		json.put("method", "getdifficulty");
+		json.put("id", UUID.randomUUID().toString());
+		try {
+			//httpclient.getCredentialsProvider().setCredentials(new AuthScope("localhost", 8332),
+			//		new UsernamePasswordCredentials("btc", "123"));
+			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
+					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
+			StringEntity myEntity = new StringEntity(json.toJSONString());
+			System.out.println(json.toString());
+			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
+			httppost.setEntity(myEntity);
+			System.out.println("executing request" + httppost.getRequestLine());
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+
+			System.out.println("----------------------------------------");
+			System.out.println(response.getStatusLine());
+			if (entity != null) {
+				System.out.println("Response content length: " + entity.getContentLength());
+				// System.out.println(EntityUtils.toString(entity));
+			}
+			JSONParser parser = new JSONParser();
+			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			//httpclient.getConnectionManager().shutdown();
+		}
+		difficulty = (Double)responseJsonObj.get("result");
+		//System.out.println("class "+((Class)responseJsonObj.get("result")).toString());
+		System.out.println(" getdifficulty = "+difficulty.toString() );
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
+		json.put("method", "getblockhash");
+		String block100K = "100000";
+		String[] params = { block100K };
+		if (null != params) {
+			//Arrays.asList(params)
+			JSONArray array = new JSONArray();
+			array.addAll(params);
+			//json.put("params", params);
+			json.put("params", array);
+		}
+		try {
+			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
+					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
+			StringEntity myEntity = new StringEntity(json.toJSONString());
+			System.out.println(json.toString());
+			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
+			httppost.setEntity(myEntity);
+
+			System.out.println("executing request" + httppost.getRequestLine());
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+
+			System.out.println("----------------------------------------");
+			System.out.println(response.getStatusLine());
+			if (entity != null) {
+				System.out.println("Response content length: " + entity.getContentLength());
+			}
+			JSONParser parser = new JSONParser();
+			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (org.json.simple.parser.ParseException e) {
+			e.printStackTrace();
+		}
 
 		System.out.println();
 		System.out.println();
@@ -139,10 +255,7 @@ public class App {
 	}
 
 	private static String getLocalCurrentDate() {
-		
 		LocalDate date = new LocalDate();
 		return date.toString();
-		
 	}
-
 }
