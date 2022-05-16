@@ -47,6 +47,10 @@ import org.json.simple.parser.JSONParser;
 //https://github.com/priiduneemre/btcd-cli4j
 //https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/04_4__Interlude_Using_Curl.md
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+
 public class App {
 
 	public static void main(String[] args) {
@@ -153,7 +157,7 @@ public class App {
 				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
-			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -192,17 +196,12 @@ public class App {
 				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
-			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// When HttpClient instance is no longer needed,
-			// shut down the connection manager to ensure
-			// immediate deallocation of all system resources
-			//httpclient.getConnectionManager().shutdown();
 		}
 		difficulty = (Double)responseJsonObj.get("result");
-		//System.out.println("class "+((Class)responseJsonObj.get("result")).toString());
 		System.out.println(" getdifficulty = "+difficulty.toString() );
 		System.out.println();
 		System.out.println();
@@ -212,11 +211,9 @@ public class App {
 		String block100K = "100000";
 		String[] params = { block100K };
 		if (null != params) {
-			//Arrays.asList(params)
-			JSONArray array = new JSONArray();
-			array.addAll(params);
-			//json.put("params", params);
-			json.put("params", array);
+			Collection<Integer> list = new LinkedList<Integer>();
+			list.add(10000);
+			json.put("params", list);
 		}
 		try {
 			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
@@ -234,9 +231,11 @@ public class App {
 			System.out.println(response.getStatusLine());
 			if (entity != null) {
 				System.out.println("Response content length: " + entity.getContentLength());
+			} else {
+				System.out.println("entity != null");
 			}
 			JSONParser parser = new JSONParser();
-			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -246,6 +245,8 @@ public class App {
 		} catch (org.json.simple.parser.ParseException e) {
 			e.printStackTrace();
 		}
+		String callResult = (String)responseJsonObj.get("result");
+		System.out.println(" callResult = "+callResult );
 
 		System.out.println();
 		System.out.println();
