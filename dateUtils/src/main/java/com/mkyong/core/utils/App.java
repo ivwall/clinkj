@@ -74,27 +74,11 @@ public class App {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 
 		JSONObject json = new JSONObject();
-		//json.put("id", id);
-		//json.put("method", method);
 		json.put("id", UUID.randomUUID().toString());
-		// getblockcount IS an RPC method
 		// visit https://github.com/cdelargy/BitcoinRPCClient to see this implementation
 		json.put("method", "getblockcount");
-		/*****
-		//List<String> params = ["100000"];
-		String[] params = { "100000" };
-		if (null != params) {
-			JSONArray array = new JSONArray();
-			// Arrays.asList(params)
-			//array.addAll(params);
-			array.addAll(Arrays.asList(params));
-			json.put("params", params);
-		}
-		*/
 		JSONObject responseJsonObj = null;
 		try {
-			//httpclient.getCredentialsProvider().setCredentials(new AuthScope("localhost", 8332),
-			//		new UsernamePasswordCredentials("btc", "123"));
 			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
 					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
 			StringEntity myEntity = new StringEntity(json.toJSONString());
@@ -110,7 +94,6 @@ public class App {
 			System.out.println(response.getStatusLine());
 			if (entity != null) {
 				System.out.println("Response content length: " + entity.getContentLength());
-				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
 			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
@@ -122,13 +105,6 @@ public class App {
 			e.printStackTrace();
 		} catch (org.json.simple.parser.ParseException e) {
 			e.printStackTrace();
-		/*** 
-		} finally {
-			// When HttpClient instance is no longer needed,
-			// shut down the connection manager to ensure
-			// immediate deallocation of all system resources
-			httpclient.getConnectionManager().shutdown();
-		***/
 		}
 		Long blockcount = (Long)responseJsonObj.get("result");
 		System.out.println(" blockcount = "+blockcount.toString() );
@@ -154,20 +130,14 @@ public class App {
 			System.out.println(response.getStatusLine());
 			if (entity != null) {
 				System.out.println("Response content length: " + entity.getContentLength());
-				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
 			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// When HttpClient instance is no longer needed,
-			// shut down the connection manager to ensure
-			// immediate deallocation of all system resources
-			//httpclient.getConnectionManager().shutdown();
 		}
 		Double difficulty = (Double)responseJsonObj.get("result");
-		//System.out.println("class "+((Class)responseJsonObj.get("result")).toString());
 		System.out.println(" getdifficulty = "+difficulty.toString() );
 		System.out.println();
 		System.out.println();
@@ -177,8 +147,6 @@ public class App {
 		json.put("method", "getdifficulty");
 		json.put("id", UUID.randomUUID().toString());
 		try {
-			//httpclient.getCredentialsProvider().setCredentials(new AuthScope("localhost", 8332),
-			//		new UsernamePasswordCredentials("btc", "123"));
 			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
 					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
 			StringEntity myEntity = new StringEntity(json.toJSONString());
@@ -193,7 +161,6 @@ public class App {
 			System.out.println(response.getStatusLine());
 			if (entity != null) {
 				System.out.println("Response content length: " + entity.getContentLength());
-				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
 			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
