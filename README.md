@@ -1,4 +1,9 @@
-# clinkj
+# CW - Chain Walk
+Initial Goals:
+  Find my btc addresses
+  List all addresses
+  Map the utxo movement
+
 chain links java - blockchain addresses and transactions
 
 Ubuntu 20.04.3 LTS
