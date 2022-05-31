@@ -32,9 +32,15 @@ import java.util.LinkedList;
 
 public class BitcoinRPCs {
 
+	//"10.10.89.92", 8332
+	private String nodeIP  = "10.10.89.92";
+	//"Anch0rCh@1n", "abc1234"
+	private String user    = "Anch0rCh@1n";
+	private String pw      = "abc1234";
+	private String nodeURL = "http://localhost:8332";
+
     public BitcoinRPCs() {
     }
-
 
 	private JSONObject invokeRPC(String id, String method, List<String> params) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -49,11 +55,11 @@ public class BitcoinRPCs {
 		}
 		JSONObject responseJsonObj = null;
 		try {
-			httpclient.getCredentialsProvider().setCredentials(new AuthScope("localhost", 8332),
-					new UsernamePasswordCredentials("btc", "123"));
+			httpclient.getCredentialsProvider().setCredentials(new AuthScope(nodeIP, 8332),
+					new UsernamePasswordCredentials(user, pw));
 			StringEntity myEntity = new StringEntity(json.toJSONString());
 			System.out.println(json.toString());
-			HttpPost httppost = new HttpPost("http://localhost:8332");
+			HttpPost httppost = new HttpPost(nodeURL);
 			httppost.setEntity(myEntity);
 
 			System.out.println("executing request" + httppost.getRequestLine());
@@ -64,7 +70,6 @@ public class BitcoinRPCs {
 			System.out.println(response.getStatusLine());
 			if (entity != null) {
 				System.out.println("Response content length: " + entity.getContentLength());
-				// System.out.println(EntityUtils.toString(entity));
 			}
 			JSONParser parser = new JSONParser();
 			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
@@ -89,6 +94,62 @@ public class BitcoinRPCs {
 		return responseJsonObj;
 	}
 
+	private JSONObject invokeRPC2(String id, String method, List<Object> params) {
+		System.out.println("JSONObject invokeRPC2");
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+
+		JSONObject json = new JSONObject();
+		json.put("id", id);
+		json.put("method", method);
+		//json.put("params",params);
+		if (null != params) {
+			//JSONArray array = new JSONArray();
+			//array.addAll(params);
+			json.put("params", params);
+		}
+		JSONObject responseJsonObj = null;
+		try {
+			//httpclient.getCredentialsProvider().setCredentials(new AuthScope(nodeIP, 8332),
+			//		new UsernamePasswordCredentials(user, pw));
+			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
+					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
+			StringEntity myEntity = new StringEntity(json.toJSONString());
+			System.out.println(json.toString());
+			//HttpPost httppost = new HttpPost(nodeURL);
+			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
+			httppost.setEntity(myEntity);
+
+			System.out.println("executing request" + httppost.getRequestLine());
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+
+			System.out.println("----------------------------------------");
+			System.out.println(response.getStatusLine());
+			if (entity != null) {
+				System.out.println("Response content length: " + entity.getContentLength());
+			}
+			JSONParser parser = new JSONParser();
+			responseJsonObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (org.json.simple.parser.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			httpclient.getConnectionManager().shutdown();
+		}
+		return responseJsonObj;
+	}
 
 
 
@@ -238,52 +299,21 @@ public class BitcoinRPCs {
 
 
 	public void getBlock2(){
-        System.out.println("BitcoinPRCs.getBlock(hash, 2)");
-		DefaultHttpClient httpclient = new DefaultHttpClient();
+        System.out.println("BitcoinPRCs.getBlock2(hash, 2)");
 
-		JSONObject json = new JSONObject();
-		json.put("id", UUID.randomUUID().toString());
-		JSONObject responseJsonObj = null;
-		json.put("method", "getblock");
-		String block100K = "100000";
-		String[] params = { block100K };
-		if (null != params) {
+		try {
 			Collection<Object> list = new LinkedList<Object>();
 			list.add("0000000099c744455f58e6c6e98b671e1bf7f37346bfd4cf5d0274ad8ee660cb");
 			list.add(2);
-			json.put("params", list);
-		}
-		try {
-			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
-					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
-			StringEntity myEntity = new StringEntity(json.toJSONString());
-			System.out.println(json.toString());
-			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
-			httppost.setEntity(myEntity);
 
-			System.out.println("executing request" + httppost.getRequestLine());
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
+			JSONObject json = invokeRPC2( UUID.randomUUID().toString(),
+										"getblock",	
+										(LinkedList)list );
 
-			System.out.println("----------------------------------------");
-			System.out.println(response.getStatusLine());
-			if (entity != null) {
-				System.out.println("Response content length: " + entity.getContentLength());
-			} else {
-				System.out.println("entity != null");
-			}
-			JSONParser parser = new JSONParser();
-			responseJsonObj = (JSONObject)parser.parse(EntityUtils.toString(entity));
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (org.json.simple.parser.ParseException e) {
-			e.printStackTrace();
+ 			System.out.println(" callResult = " + json.toString() );
+
+		} catch( Exception ex) {
+			System.out.println(ex.toString());
 		}
-		System.out.println(" callResult = "+responseJsonObj.toString() );
-		//System.out.println(" callResult = "+responseJsonObj.toString(4) );
-    }   
+	}   
 } 
