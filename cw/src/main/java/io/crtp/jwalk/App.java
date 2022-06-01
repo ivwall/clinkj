@@ -26,12 +26,6 @@ public class App {
 		System.out.println();
 		System.out.println();
 
-		/****
-		bitcoinRPCs.getBlock();		
-		bitcoinRPCs.getBlock2();		
-		bitcoinRPCs.getBlock2();		
-		*/
-
 		JWalk01 jw = new JWalk01();
 		jw.getBlockCount();
 		System.out.println("Hash of block     10 "+jw.getBlockHash(10));

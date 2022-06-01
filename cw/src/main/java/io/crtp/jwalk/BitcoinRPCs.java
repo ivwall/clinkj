@@ -56,17 +56,13 @@ public class BitcoinRPCs implements IBitcoinRPC {
 			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
 					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
 			StringEntity myEntity = new StringEntity(json.toJSONString());
-			//System.out.println(json.toString());
 			//HttpPost httppost = new HttpPost(nodeURL);
 			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
 			httppost.setEntity(myEntity);
 
-			//System.out.println("executing request" + httppost.getRequestLine());
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 
-			//System.out.println("----------------------------------------");
-			//System.out.println(response.getStatusLine());
 			if (entity != null) {
 				//System.out.println("Response content length: " + entity.getContentLength());
 			} else {
@@ -186,6 +182,4 @@ public class BitcoinRPCs implements IBitcoinRPC {
 		}
 		return result;
 	}
-
-
 } 
