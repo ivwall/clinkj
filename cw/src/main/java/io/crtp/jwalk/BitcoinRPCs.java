@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class BitcoinRPCs {
+public class BitcoinRPCs implements IBitcoinRPC {
 
 	private String nodeIP  = "10.10.89.92";
 	private String user    = "Anch0rCh@1n";
@@ -40,9 +40,7 @@ public class BitcoinRPCs {
     public BitcoinRPCs() {
     }
 
-
 	private JSONObject invokeRPC2(String id, String method, List<Object> params) {
-		System.out.println("JSONObject invokeRPC2");
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 
 		JSONObject json = new JSONObject();
@@ -58,18 +56,20 @@ public class BitcoinRPCs {
 			httpclient.getCredentialsProvider().setCredentials(new AuthScope("10.10.89.92", 8332),
 					new UsernamePasswordCredentials("Anch0rCh@1n", "abc1234"));
 			StringEntity myEntity = new StringEntity(json.toJSONString());
-			System.out.println(json.toString());
+			//System.out.println(json.toString());
 			//HttpPost httppost = new HttpPost(nodeURL);
 			HttpPost httppost = new HttpPost("http://10.10.89.92:8332");
 			httppost.setEntity(myEntity);
 
-			System.out.println("executing request" + httppost.getRequestLine());
+			//System.out.println("executing request" + httppost.getRequestLine());
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 
-			System.out.println("----------------------------------------");
-			System.out.println(response.getStatusLine());
+			//System.out.println("----------------------------------------");
+			//System.out.println(response.getStatusLine());
 			if (entity != null) {
+				//System.out.println("Response content length: " + entity.getContentLength());
+			} else {
 				System.out.println("Response content length: " + entity.getContentLength());
 			}
 			JSONParser parser = new JSONParser();
@@ -95,12 +95,9 @@ public class BitcoinRPCs {
 		return responseJsonObj;
 	}
 
-    public void getBlockcount(){
+    public void getBlockCount(){
         System.out.println("BitcoinRPCs.getBlockcont");
 		try {
-			Collection<Object> list = new LinkedList<Object>();
-			list.add(10000);
-
 			JSONObject json = invokeRPC2( UUID.randomUUID().toString(),
 										"getblockcount",	
 										null );
@@ -111,31 +108,25 @@ public class BitcoinRPCs {
 		} catch( Exception ex) {
 			System.out.println(ex.toString());
 		}
-		System.out.println();
-		System.out.println();
     }
 	
-    public void getBlockhash(){
-        System.out.println("BitcoinPRCs.getBlockhash");
-
+    public String getBlockHash(int blockHeight){
+		String result = "not set";
 		try {
 			Collection<Object> list = new LinkedList<Object>();
-			list.add(10000);
+			list.add(blockHeight);
 
 			JSONObject json = invokeRPC2( UUID.randomUUID().toString(),
 										"getblockhash",	
 										(LinkedList)list );
 
- 			System.out.println("getblockhash callResult = " + json.toString() );
-			String callResult = (String)json.get("result");
-			System.out.println(" callResult = "+callResult );
+			result = (String)json.get("result");
 		} catch( Exception ex) {
 			System.out.println(ex.toString());
 		}
-		System.out.println();
-		System.out.println();
-
+		return result;
     }
+
 
     public void getBlock(){
         System.out.println("BitcoinPRCs.getBlock");
@@ -158,7 +149,6 @@ public class BitcoinRPCs {
 
 	public void getBlock2(){
         System.out.println("BitcoinPRCs.getBlock2(hash, 2)");
-
 		try {
 			Collection<Object> list = new LinkedList<Object>();
 			list.add("0000000099c744455f58e6c6e98b671e1bf7f37346bfd4cf5d0274ad8ee660cb");
@@ -173,5 +163,29 @@ public class BitcoinRPCs {
 		} catch( Exception ex) {
 			System.out.println(ex.toString());
 		}
-	}   
+	}
+	
+    /*
+     * getblock
+	 * TODO describe verbosity
+	 * TDOO or write string typing
+     */
+    public JSONObject getBlock(String hash, int verbosity) {
+		JSONObject result = null;
+		try {
+			Collection<Object> list = new LinkedList<Object>();
+			list.add(hash);
+			list.add(verbosity);
+
+			result = invokeRPC2( UUID.randomUUID().toString(),
+										"getblock",	
+										(LinkedList)list );
+
+		} catch( Exception ex) {
+			System.out.println(ex.toString());
+		}
+		return result;
+	}
+
+
 } 

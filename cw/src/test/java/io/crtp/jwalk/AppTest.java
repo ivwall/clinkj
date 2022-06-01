@@ -33,7 +33,6 @@ public class AppTest extends TestCase {
      */
     public void testApp() {
         System.out.println("AppTest.testApp");
-        //App app = App();
         BitcoinRPCs btcRBCs = new BitcoinRPCs();
         assertTrue( true );
     }
