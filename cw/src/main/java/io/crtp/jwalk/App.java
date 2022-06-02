@@ -13,6 +13,12 @@ package io.crtp.jwalk;
 // https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/04_4__Interlude_Using_Curl.md
 
 import org.json.simple.JSONObject;
+
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 public class App {
     public static void main( String[] args ) {
         System.out.println( "What's up Doc!" );
@@ -39,6 +45,21 @@ public class App {
 
 		System.out.println();
 		System.out.println((jw.getBlock(jw.getBlockHash(350160),2)).toString());
+
+		System.out.println();
+		String block = ((JSONObject)(jw.getBlock(jw.getBlockHash(350160),2))).toString();
+		//ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+		ObjectMapper mapper = new ObjectMapper();
+        try {
+			Object jsonObject = mapper.readValue(block, Object.class);
+			String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+            System.out.println(prettyJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 }
     
