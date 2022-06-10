@@ -14,10 +14,9 @@ package io.crtp.jwalk;
 
 import org.json.simple.JSONObject;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class App {
     public static void main( String[] args ) {
@@ -26,39 +25,10 @@ public class App {
         System.out.println( "Follow the utx flow." );
 		System.out.println();
 
-		BitcoinRPCs bitcoinRPCs = new BitcoinRPCs();
-
-		bitcoinRPCs.getBlockHash(0);		
-		System.out.println();
-		System.out.println();
-
 		JWalk01 jw = new JWalk01();
-		jw.getBlockCount();
-		System.out.println("Hash of block     10 "+jw.getBlockHash(10));
-		System.out.println("Hash of block 700321 "+jw.getBlockHash(700321));
-
-		System.out.println();
-		System.out.println((jw.getBlock(jw.getBlockHash(10),2)).toString());
-
-		System.out.println();
-		System.out.println((jw.getBlock(jw.getBlockHash(700321),2)).toString());
-
-		System.out.println();
-		System.out.println((jw.getBlock(jw.getBlockHash(350160),2)).toString());
-
-		System.out.println();
-		String block = ((JSONObject)(jw.getBlock(jw.getBlockHash(350160),2))).toString();
-		//ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-		ObjectMapper mapper = new ObjectMapper();
-        try {
-			Object jsonObject = mapper.readValue(block, Object.class);
-			String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-            System.out.println(prettyJson);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-
+		//jw.showTheFirst10Blocks();
+        jw.parseTheFirstBlock();
+		//jw.base58();
 
     }
 }

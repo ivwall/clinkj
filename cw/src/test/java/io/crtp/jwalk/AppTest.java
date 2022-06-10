@@ -9,6 +9,10 @@ import junit.framework.TestSuite;
 import io.crtp.jwalk.App;
 import io.crtp.jwalk.BitcoinRPCs;
 
+
+import  org.bitcoinj.core.Base58;
+import java.util.Arrays;
+
 public class AppTest extends TestCase {
 
     /**
@@ -34,6 +38,20 @@ public class AppTest extends TestCase {
     public void testApp() {
         System.out.println("AppTest.testApp");
         BitcoinRPCs btcRBCs = new BitcoinRPCs();
+        base58();
         assertTrue( true );
     }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void base58(){
+        System.out.println("AppTest.base58");
+        byte[] testbytes = "Hello World".getBytes();
+        byte[] actualbytes = Base58.decode("JxF12TrwUP45BMd");
+        assertTrue(new String(actualbytes), Arrays.equals(testbytes, actualbytes));          
+    }
+
+
+
 }
