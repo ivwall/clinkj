@@ -102,12 +102,11 @@ public class JWalk01 {
     }
 
     public void printJsonObject(JSONObject jsonObj) {
+        String asmStr = null;
         for (Object key : jsonObj.keySet()) {
             String keyStr = (String)key;
             Object keyvalue = jsonObj.get(keyStr);
     
-            //System.out.println("key: "+ keyStr + " value: " + keyvalue);
-            //for nested objects iteration if required
             if (keyvalue instanceof JSONObject) {
                     System.out.println("");
                     System.out.println("  ~~~~   nested ~~~~~");
@@ -127,10 +126,25 @@ public class JWalk01 {
                     System.out.println(" array element "+i+" is "+obj.toString());
                     printJsonObject(obj);
                 }
-                 
+            } else if(keyStr.equals("asm")){
+                System.out.println("  "+ keyStr + " : " + keyvalue);                 
+                processASMString((String)keyvalue);
             } else {
                 System.out.println("  "+ keyStr + " : " + keyvalue);
+                
             }
         }
     }
+
+
+    public void processASMString(String s) {
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("process this "+s);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+    }
+
 }
