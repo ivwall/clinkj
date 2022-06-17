@@ -23,6 +23,16 @@ public class Block {
 	private long confirmations;
 	private long version;
 	private long size;
+
+	private String tempASM = "not set";
+
+	public void setTempASM(String t){
+		tempASM = t;
+	}
+
+	public String getTempASM(){
+		return tempASM;
+	}
 	
 	
 	public List<String> getTx() {

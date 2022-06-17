@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bitcoinj.core.Base58;
+import org.bitcoinj.core.Sha256Hash;
 
 // https://www.arcblock.io/blog/en/post/2018/08/16/index-bitcoin
 // https://gobittest.appspot.com/Address
@@ -79,12 +80,9 @@ public class JWalk01 {
 
         JSONObject blockJsonObj = bitcoinRPCs.getBlock(bitcoinRPCs.getBlockHash(blockX),2);
 
-        //HashMap keySet = blockJsonObj.keySet();
-        //String[] fields = wtf.getNames(blockJsonObj);
         System.out.println("");
         System.out.println("blockJsonObj contains result "+blockJsonObj.containsKey("result"));
         System.out.println("blockJsonObj contains xyz "+blockJsonObj.containsKey("xyz"));
-        //Set resultKeySet = blockJsonObj.keySet();
         JSONObject resultJsonObj = (JSONObject)blockJsonObj.get("result");
         String resultStr = resultJsonObj.toString();
         try {
@@ -97,12 +95,20 @@ public class JWalk01 {
 
         System.out.println("");
         System.out.println("printJsonObject vvvvvvvvv");
-        System.out.println("");        
-        printJsonObject(resultJsonObj);
+        System.out.println("");      
+        Block javaBlock = new Block();  
+        printJsonObject(resultJsonObj, javaBlock);
+        System.out.println("");
+        System.out.println("");
+        //System.out.println("javaBlock.getTempASM "+javaBlock.getTempASM());
+        //System.out.println("");
+        //System.out.println("");
+
+        cypherDev(javaBlock);
+
     }
 
-    public void printJsonObject(JSONObject jsonObj) {
-        String asmStr = null;
+    public void printJsonObject(JSONObject jsonObj, Block jBlock) {
         for (Object key : jsonObj.keySet()) {
             String keyStr = (String)key;
             Object keyvalue = jsonObj.get(keyStr);
@@ -111,7 +117,7 @@ public class JWalk01 {
                     System.out.println("");
                     System.out.println("  ~~~~   nested ~~~~~");
                     System.out.println("");        
-                    printJsonObject((JSONObject)keyvalue);
+                    printJsonObject((JSONObject)keyvalue, jBlock);
             } else if (keyvalue instanceof JSONArray) {
                 System.out.println("key: "+ keyStr + " value: " + keyvalue);
 
@@ -124,27 +130,35 @@ public class JWalk01 {
                 for (int i=0; i<jsonArray.size(); i++){
                     JSONObject obj = (JSONObject)jsonArray.get(i);
                     System.out.println(" array element "+i+" is "+obj.toString());
-                    printJsonObject(obj);
+                    printJsonObject(obj, jBlock);
                 }
             } else if(keyStr.equals("asm")){
                 System.out.println("  "+ keyStr + " : " + keyvalue);                 
-                processASMString((String)keyvalue);
+                jBlock.setTempASM((String)keyvalue);
             } else {
                 System.out.println("  "+ keyStr + " : " + keyvalue);
-                
             }
         }
     }
 
-
-    public void processASMString(String s) {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("process this "+s);
-        System.out.println();
-        System.out.println();
-        System.out.println();
+    public void cypherDev(Block b){
+        try {
+            String a = b.getTempASM();
+            System.out.println("cypherDev");
+            System.out.println("");
+            //System.out.println(a);
+            String[] strArray = a.split(" ");
+            System.out.println(strArray[0]);
+            String ECDA = strArray[0];
+            System.out.println("");
+            Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
+            System.out.println(firstHash.toString());
+            byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
+            String hash2str = new String(hash2);
+            System.out.println(hash2str);
+        } catch(Exception ex) {
+            System.out.println(ex.toString());
+            ex.printStackTrace();
+        }
     }
-
 }
