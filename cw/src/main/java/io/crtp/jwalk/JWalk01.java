@@ -1,5 +1,10 @@
 package io.crtp.jwalk;
 
+import java.security.MessageDigest;
+import java.math.BigInteger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.security.Security;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -100,12 +105,17 @@ public class JWalk01 {
         printJsonObject(resultJsonObj, javaBlock);
         System.out.println("");
         System.out.println("");
-        //System.out.println("javaBlock.getTempASM "+javaBlock.getTempASM());
-        //System.out.println("");
-        //System.out.println("");
-
         cypherDev(javaBlock);
-
+        System.out.println("");
+        System.out.println("");
+        System.out.println("transition code");
+        System.out.println("");
+        System.out.println("");
+        addressFromECDSA(javaBlock.getTempASM());
+        System.out.println("");
+        System.out.println("");
+        String ecdsa = "04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29";
+        addressFromECDSA(ecdsa);
     }
 
     public void printJsonObject(JSONObject jsonObj, Block jBlock) {
@@ -150,15 +160,125 @@ public class JWalk01 {
             String[] strArray = a.split(" ");
             System.out.println(strArray[0]);
             String ECDA = strArray[0];
+            //Sha256Hash tx_hash = new Sha256Hash(ECDA);
             System.out.println("");
             Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
             System.out.println(firstHash.toString());
             byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
             String hash2str = new String(hash2);
             System.out.println(hash2str);
+            //"# prints
+            //bcPub: 04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29"
+            System.out.println("04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29");
+            System.out.println("");
+            System.out.println("");
+            MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
+            //System.out.println("  sha: " + bytesToHex(s1).toUpperCase());
+            //System.out.println("  sha: " + bytesToHex(s1).toUpperCase());
+            System.out.println("  sha: " + toHexString(s1).toUpperCase());
+            //# prints
+            System.out.println("  sha: 7524DC35AEB4B62A0F1C90425ADC6732A7C5DF51A72E8B90983629A7AEC656A0");
+
+            MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
+            byte[] r1 = rmd.digest(s1);
+
+            byte[] r2 = new byte[r1.length + 1];
+            r2[0] = 0;
+            for (int i = 0 ; i < r1.length ; i++) r2[i+1] = r1[i];
+            //System.out.println("  rmd: " + bytesToHex(r2).toUpperCase());            
+            System.out.println("  rmd: " + toHexString(r2).toUpperCase());            
+            //# prints
+            System.out.println("  rmd: 00C5FAE41AB21FA56CFBAFA3AE7FB5784441D11CEC");
+
+
+            byte[] s2 = sha.digest(r2);
+            //System.out.println("  sha: " + bytesToHex(s2).toUpperCase());
+            System.out.println("  sha: " + toHexString(s2).toUpperCase());
+            byte[] s3 = sha.digest(s2);
+            //System.out.println("  sha: " + bytesToHex(s3).toUpperCase());            
+            System.out.println("  sha: " + toHexString(s3).toUpperCase());  
+                        
+            byte[] a1 = new byte[25];
+            for (int i = 0 ; i < r2.length ; i++) a1[i] = r2[i];
+            for (int i = 0 ; i < 5 ; i++) a1[20 + i] = s3[i];
+            
+            System.out.println("  adr: " + Base58.encode(a1));
+            //# prints
+            System.out.println("  adr: 1K3pg1JFPtW7NvKNA77YCVghZRq2s1LwVF");
+
         } catch(Exception ex) {
             System.out.println(ex.toString());
             ex.printStackTrace();
         }
+    }
+
+    public void addressFromECDSA( String e ){
+        try {
+            String a = e;
+            System.out.println("addressFromECDSA");
+            String[] strArray = a.split(" ");
+            System.out.println(strArray[0]);
+            String ECDA = strArray[0];
+            Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
+            System.out.println("       "+ firstHash.toString());
+            //byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
+            //String hash2str = new String(hash2);
+            //System.out.println(hash2str);
+            //"# prints
+            //bcPub: 04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29"
+            //System.out.println("04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29");
+            //System.out.println("");
+            MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
+            //System.out.println("  sha: " + bytesToHex(s1).toUpperCase());
+            //System.out.println("  sha: " + bytesToHex(s1).toUpperCase());
+            System.out.println("  sha: " + toHexString(s1).toUpperCase());
+            //# prints
+            //System.out.println("  sha: 7524DC35AEB4B62A0F1C90425ADC6732A7C5DF51A72E8B90983629A7AEC656A0");
+
+            MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
+            byte[] r1 = rmd.digest(s1);
+
+            byte[] r2 = new byte[r1.length + 1];
+            r2[0] = 0;
+            for (int i = 0 ; i < r1.length ; i++) r2[i+1] = r1[i];
+            //System.out.println("  rmd: " + bytesToHex(r2).toUpperCase());            
+            System.out.println("  rmd: " + toHexString(r2).toUpperCase());            
+            //# prints
+            //System.out.println("  rmd: 00C5FAE41AB21FA56CFBAFA3AE7FB5784441D11CEC");
+
+            byte[] s2 = sha.digest(r2);
+            //System.out.println("  sha: " + bytesToHex(s2).toUpperCase());
+            System.out.println("  sha: " + toHexString(s2).toUpperCase());
+            byte[] s3 = sha.digest(s2);
+            //System.out.println("  sha: " + bytesToHex(s3).toUpperCase());            
+            System.out.println("  sha: " + toHexString(s3).toUpperCase());  
+                        
+            byte[] a1 = new byte[25];
+            for (int i = 0 ; i < r2.length ; i++) a1[i] = r2[i];
+            for (int i = 0 ; i < 5 ; i++) a1[20 + i] = s3[i];
+            
+            System.out.println("  adr: " + Base58.encode(a1));
+            //# prints
+            //System.out.println("  adr: 1K3pg1JFPtW7NvKNA77YCVghZRq2s1LwVF");
+
+        } catch(Exception ex) {
+            System.out.println(ex.toString());
+            ex.printStackTrace();
+        }
+    }
+
+    public static String toHexString(byte[] hash) {
+        BigInteger number = new BigInteger(1, hash);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length() < 64) {
+            hexString.insert(0, '0');
+        }
+        return hexString.toString();
+    }
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
     }
 }
