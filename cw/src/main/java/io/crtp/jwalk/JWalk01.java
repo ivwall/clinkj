@@ -18,8 +18,7 @@ import org.bitcoinj.core.Sha256Hash;
 // https://www.arcblock.io/blog/en/post/2018/08/16/index-bitcoin
 // https://gobittest.appspot.com/Address
 
-
-
+import java.util.Arrays;
 
 public class JWalk01 {
     BitcoinRPCs bitcoinRPCs = new BitcoinRPCs();
@@ -111,11 +110,11 @@ public class JWalk01 {
         System.out.println("transition code");
         System.out.println("");
         System.out.println("");
-        addressFromECDSA(javaBlock.getTempASM());
+        addressFromPubKey(javaBlock.getTempASM());
         System.out.println("");
         System.out.println("");
         String ecdsa = "04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29";
-        addressFromECDSA(ecdsa);
+        addressFromPubKey(ecdsa);
     }
 
     public void printJsonObject(JSONObject jsonObj, Block jBlock) {
@@ -213,13 +212,15 @@ public class JWalk01 {
         }
     }
 
-    public void addressFromECDSA( String e ){
+    public void addressFromPubKey( String e ){
         try {
             String a = e;
-            System.out.println("addressFromECDSA");
+            System.out.println("addressFromPubKey");
             String[] strArray = a.split(" ");
             System.out.println(strArray[0]);
             String ECDA = strArray[0];
+            byte[] pkArray = ECDA.getBytes();
+            System.out.println("pubkey as bytes: "+Arrays.toString(pkArray));
             Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
             System.out.println("       "+ firstHash.toString());
             //byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
@@ -277,6 +278,20 @@ public class JWalk01 {
         }
         return hexString.toString();
     }
+
+    private static void convertStringToHex(String str) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        char[] charArray = str.toCharArray();
+
+        for (char c : charArray) {
+            String charToHex = Integer.toHexString(c);
+            stringBuilder.append(charToHex);
+        }
+
+        System.out.println("Converted Hex from String: "+stringBuilder.toString());
+    }
+
 
     static {
         Security.addProvider(new BouncyCastleProvider());
