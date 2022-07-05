@@ -70,7 +70,40 @@ Installing collected packages: base58
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed base58-2.1.1
 
+export PATH=
 
+pip3 install hashlib
+
+
+Hashlib uses OpenSSL for ripemd160 and apparently OpenSSL disabled some older crypto algos around version 3.0 in November 2021. All the functions are still there but require manual enabling. See issue 16994 of OpenSSL github project for details.
+
+To quickly enable it, find the directory that holds your OpenSSL config file or a symlink to it, by running the below command:
+
+openssl version -d
+You can now go to the directory and edit the config file (it may be necessary to use sudo):
+
+nano openssl.cnf
+Make sure that the config file contains following lines:
+
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+legacy = legacy_sect
+
+[default_sect]
+activate = 1
+
+[legacy_sect]
+activate = 1
+Tested on: OpenSSL 3.0.2, Python 3.10.4, Linux Ubuntu 22.04 LTS aarch64, I have no access to other platforms at the moment.
+
+
+compare link:
+https://gobittest.appspot.com/Address
 
 
 reference links:
@@ -83,6 +116,8 @@ https://stackoverflow.com/questions/58608285/getting-a-list-of-keys-from-block-0
 
 work through an hash install error
 https://stackoverflow.com/questions/72409563/unsupported-hash-type-ripemd160-with-hashlib-in-python
+https://stackoverflow.com/questions/72409563/unsupported-hash-type-ripemd160-with-hashlib-in-python
+
 
 https://learnmeabitcoin.com/technical/p2sh
 https://learnmeabitcoin.com/technical/p2pk

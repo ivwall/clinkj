@@ -1,0 +1,34 @@
+digraph "io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" { 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "junit:junit:jar:4.11:test" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "joda-time:joda-time:jar:2.5:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.thetransactioncompany:jsonrpc2-client:jar:1.16.5:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.googlecode.json-simple:json-simple:jar:1.1:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.google.code.gson:gson:jar:1.4:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "org.apache.httpcomponents:httpclient:jar:4.1.1:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.fasterxml.jackson.core:jackson-core:jar:2.13.3:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "org.slf4j:slf4j-api:jar:2.0.0-alpha7:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "org.slf4j:slf4j-simple:jar:2.0.0-alpha7:compile" ; 
+	"io.crtp.jwalk:jwalk:jar:1.0-SNAPSHOT" -> "org.bouncycastle:bcprov-jdk15on:jar:1.70:compile" ; 
+	"junit:junit:jar:4.11:test" -> "org.hamcrest:hamcrest-core:jar:1.3:test" ; 
+	"com.thetransactioncompany:jsonrpc2-client:jar:1.16.5:compile" -> "net.minidev:json-smart:jar:1.3.1:compile" ; 
+	"com.thetransactioncompany:jsonrpc2-client:jar:1.16.5:compile" -> "com.thetransactioncompany:jsonrpc2-base:jar:1.38.2:compile" ; 
+	"org.apache.httpcomponents:httpclient:jar:4.1.1:compile" -> "org.apache.httpcomponents:httpcore:jar:4.1:compile" ; 
+	"org.apache.httpcomponents:httpclient:jar:4.1.1:compile" -> "commons-logging:commons-logging:jar:1.1.1:compile" ; 
+	"org.apache.httpcomponents:httpclient:jar:4.1.1:compile" -> "commons-codec:commons-codec:jar:1.4:compile" ; 
+	"org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" -> "org.bouncycastle:bcprov-jdk15to18:jar:1.69:compile" ; 
+	"org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" -> "com.google.guava:guava:jar:31.0.1-android:compile" ; 
+	"org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" -> "com.google.protobuf:protobuf-javalite:jar:3.18.0:compile" ; 
+	"org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" -> "com.squareup.okhttp3:okhttp:jar:3.14.9:compile" ; 
+	"org.bitcoinj:bitcoinj-core:jar:0.16.1:compile" -> "net.jcip:jcip-annotations:jar:1.0:runtime" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "com.google.guava:failureaccess:jar:1.0.1:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "com.google.code.findbugs:jsr305:jar:3.0.2:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "org.checkerframework:checker-qual:jar:3.12.0:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "org.checkerframework:checker-compat-qual:jar:2.5.5:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "com.google.errorprone:error_prone_annotations:jar:2.7.1:compile" ; 
+	"com.google.guava:guava:jar:31.0.1-android:compile" -> "com.google.j2objc:j2objc-annotations:jar:1.3:compile" ; 
+	"com.squareup.okhttp3:okhttp:jar:3.14.9:compile" -> "com.squareup.okio:okio:jar:1.17.2:compile" ; 
+ } 

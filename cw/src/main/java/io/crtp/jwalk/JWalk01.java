@@ -20,6 +20,11 @@ import org.bitcoinj.core.Sha256Hash;
 
 import java.util.Arrays;
 
+// -----------------------
+// call python work
+import org.python.util.PythonInterpreter;
+import org.python.core.*;
+
 public class JWalk01 {
     BitcoinRPCs bitcoinRPCs = new BitcoinRPCs();
 
@@ -111,6 +116,8 @@ public class JWalk01 {
         System.out.println("");
         System.out.println("");
         addressFromPubKey(javaBlock.getTempASM());
+        //String hex = "4678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f";
+        //addressFromPubKey(hex);
         System.out.println("");
         System.out.println("");
         String ecdsa = "04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29";
@@ -222,7 +229,7 @@ public class JWalk01 {
             byte[] pkArray = ECDA.getBytes();
             System.out.println("pubkey as bytes: "+Arrays.toString(pkArray));
             Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
-            System.out.println("       "+ firstHash.toString());
+            System.out.println("  btcj "+ firstHash.toString());
             //byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
             //String hash2str = new String(hash2);
             //System.out.println(hash2str);
@@ -290,6 +297,27 @@ public class JWalk01 {
         }
 
         System.out.println("Converted Hex from String: "+stringBuilder.toString());
+    }
+
+    public String pythonCall01 (String pubKey) {
+        // https://www.tutorialspoint.com/jython/jython_java_application.htm
+        // https://mr-dai.github.io/embedding-jython/
+        System.out.println("pythonCall01 "+pubKey);
+        try {
+            PythonInterpreter interp = new PythonInterpreter();
+            System.out.println("What's up Java Doc?");
+            interp.execfile("pj.py");
+            interp.set("a", new PyInteger(42));
+            interp.exec("print a");
+            interp.exec("x = 2+2");
+            PyObject x = interp.get("x");
+            System.out.println("x: "+x);
+            System.out.println("Goodbye "); 
+            interp.close();       
+        } catch(Exception ex){
+            System.out.println(ex.toString());
+        }
+        return "tbd";
     }
 
 
