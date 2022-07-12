@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven 3.6.3
-Built-By: u2
-Build-Jdk: 18-ea
-Main-Class: io.crtp.jwalk.App
-
