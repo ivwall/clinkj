@@ -28,12 +28,7 @@ public class App {
 		JWalk01 jw = new JWalk01();
 		//jw.showTheFirst10Blocks();
         //jw.parseTheFirstBlock();
-		//jw.base58();
-        //jw.pythonCall01("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f");
-        //jw.pythonCall02("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f");
-        //jw.addressFromPubKey("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f");
-        jw.lmb("ab");
-        //jw.lmb("0xab");
+        jw.lmb("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f");
     }
 }
     

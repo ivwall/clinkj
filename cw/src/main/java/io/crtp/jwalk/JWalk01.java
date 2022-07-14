@@ -7,7 +7,6 @@ import java.security.Security;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,32 +19,14 @@ import org.bitcoinj.core.Sha256Hash;
 
 import java.util.Arrays;
 
-// -----------------------
-// call python work
-import org.python.util.PythonInterpreter;
-import org.python.core.*;
-
-
 // ------------------------
-import java.security.MessageDigest;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import javax.xml.bind.DatatypeConverter;
 
 //-----------------------------------
-import org.bitcoinj.core.TransactionOutput;
 //ByteUtils.HEX.decode
-//import org.bitcoinj.base.utils.ByteUtils;
-//import org.bitcoinj.base.utils.ByteUtils;
-import org.bitcoinj.core.Utils;
-//import org.bitcoinj.base.Utils
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
-import org.bitcoinj.params.MainNetParams;
-import org.bitcoinj.core.*;
-import org.bitcoinj.core.Address;
-
 import java.util.Base64;
-
 
 public class JWalk01 {
     BitcoinRPCs bitcoinRPCs = new BitcoinRPCs();
@@ -130,10 +111,6 @@ public class JWalk01 {
         Block javaBlock = new Block();  
         printJsonObject(resultJsonObj, javaBlock);
         System.out.println("");
-        System.out.println("");
-        cypherDev(javaBlock);
-        System.out.println("");
-        System.out.println("");
         System.out.println("transition code");
         System.out.println("");
         System.out.println("");
@@ -179,111 +156,93 @@ public class JWalk01 {
         }
     }
 
-    public void cypherDev(Block b){
+    public void lmb( String a ){
         try {
-            String a = b.getTempASM();
-            System.out.println("cypherDev");
-            System.out.println("");
-            //System.out.println(a);
-            String[] strArray = a.split(" ");
-            System.out.println(strArray[0]);
-            String ECDA = strArray[0];
-            //Sha256Hash tx_hash = new Sha256Hash(ECDA);
-            System.out.println("");
-            Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
-            System.out.println(firstHash.toString());
-            byte[] hash2 =  Sha256Hash.hash(ECDA.getBytes());
-            String hash2str = new String(hash2);
-            System.out.println(hash2str);
-            //"# prints
-            //bcPub: 04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29"
-            System.out.println("04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29");
-            System.out.println("");
-            System.out.println("");
-            MessageDigest sha = MessageDigest.getInstance("SHA-256");
-            byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
-            System.out.println("  sha: " + toHexString(s1).toUpperCase());
-            //# prints
-            System.out.println("  sha: 7524DC35AEB4B62A0F1C90425ADC6732A7C5DF51A72E8B90983629A7AEC656A0");
+            System.out.println("learn me btc: https://learnmeabitcoin.com/technical/hash-function");
+            //System.out.println(strArray[0]);
+            //String ECDA = strArray[0];
+            //Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
+            //System.out.println("  btcj "+ firstHash.toString());
+            //MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            //byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
+            //MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
+            //byte[] r1 = rmd.digest(s1);
 
-            MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
-            byte[] r1 = rmd.digest(s1);
+            //https://gobittest.appspot.com/Address
+            //  1 Public ECDSA Key
+            //    a = ECDSA
+            System.out.println(" Step 1 ecdsa      "+a);
+            byte[] iti = hexStringToByteArray(a);
+            Sha256Hash itiHash = Sha256Hash.of(iti);
+            System.out.println(" Step 2 256        "+ itiHash.toString());
 
-            byte[] r2 = new byte[r1.length + 1];
-            r2[0] = 0;
-            for (int i = 0 ; i < r1.length ; i++) r2[i+1] = r1[i];
-            System.out.println("  rmd: " + toHexString(r2).toUpperCase());            
-            System.out.println("  rmd: 00C5FAE41AB21FA56CFBAFA3AE7FB5784441D11CEC");
+            MessageDigest rmdx = MessageDigest.getInstance("RipeMD160", "BC");
+            byte[] r1x = rmdx.digest(itiHash.getBytes());
+            //System.out.println(" Step 3 md160 of 2 "+ r1x.toString());
 
+            //Converting the byte array in to HexString format
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0;i<r1x.length;i++) {
+                hexString.append(Integer.toHexString(0xFF & r1x[i]));
+            }
+            System.out.println(" Step 3 md160 of 2 " + hexString.toString());
 
-            byte[] s2 = sha.digest(r2);
-            System.out.println("  sha: " + toHexString(s2).toUpperCase());
-            byte[] s3 = sha.digest(s2);
-            System.out.println("  sha: " + toHexString(s3).toUpperCase());  
-                        
-            byte[] a1 = new byte[25];
-            for (int i = 0 ; i < r2.length ; i++) a1[i] = r2[i];
-            for (int i = 0 ; i < 5 ; i++) a1[20 + i] = s3[i];
+            String md160str = "00"+hexString.toString();
+            System.out.println(" Step 4 add net    "+md160str+"  "+md160str.length());
+
+            String str = md160str;      
+            byte[] zero = hexStringToByteArray("00");
+            //System.out.println(zero.toString()+"  "+zero.length);
+
+            byte[] s5 = new byte[r1x.length + 1];
+            s5[0] = zero[0];
+            System.arraycopy(r1x, 0, s5, 1, r1x.length);
             
-            System.out.println("  adr: " + Base58.encode(a1));
-            //# prints
-            System.out.println("  adr: 1K3pg1JFPtW7NvKNA77YCVghZRq2s1LwVF");
+            System.out.println(byteToHexStr(s5));
 
+            Sha256Hash s5x = Sha256Hash.of(s5);
+            System.out.println(" Step 5 ha356 of 4 " + s5x.toString());
+
+            Sha256Hash s6x = Sha256Hash.of(s5x.getBytes());
+            System.out.println(" Step 6 ha356 of 5 " + s6x.toString());
+
+            byte[] first4of6 = new byte[4];
+            System.arraycopy(s6x.getBytes(), 0, first4of6, 0, 4);
+            System.out.println(byteToHexStr(first4of6));
+
+            byte[] s5xb = s5x.getBytes();
+            byte[] s8 = new byte[s5.length + first4of6.length];
+
+            //byte[] c = new byte[a.length + b.length];
+            //System.arraycopy(a, 0, c, 0, a.length);
+            //System.arraycopy(b, 0, c, a.length, b.length);
+
+            System.arraycopy(s5, 0, s8, 0, s5.length);
+            //System.out.println("s8.length "+s8.length);
+            //System.out.println("first4of6.length "+first4of6.length);
+            //System.out.println("s8.length - first4of6.length "+ (s8.length - first4of6.length));
+            System.arraycopy(first4of6, 0, s8, s5.length, first4of6.length);
+            System.out.println(byteToHexStr(s8));
+
+            //7 - First four bytes of 6
+            String addr = Base58.encode(s8);
+            System.out.println(addr);
         } catch(Exception ex) {
             System.out.println(ex.toString());
             ex.printStackTrace();
         }
     }
 
-    public void lmb( String e ){
-        try {
-
-            String a = e;
-            System.out.println("learn me btc: https://learnmeabitcoin.com/technical/hash-function");
-            String[] strArray = a.split(" ");
-            System.out.println(strArray[0]);
-            String ECDA = strArray[0];
-            System.out.println(ECDA.length());
-            byte[] pkArray = ECDA.getBytes();
-            System.out.println("pubkey as bytes: "+Arrays.toString(pkArray));
-            pkArray = ECDA.getBytes(StandardCharsets.UTF_8);
-            System.out.println("pubkey as bytes: "+Arrays.toString(pkArray));
-            System.out.println(bytesToHex2(pkArray));
-
-            System.out.println(pkArray.length);
-            Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
-            System.out.println("  btcj "+ firstHash.toString());
-            MessageDigest sha = MessageDigest.getInstance("SHA-256");
-            byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
-            System.out.println("  sha: " + toHexString(s1).toUpperCase());
-
-            MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
-            byte[] r1 = rmd.digest(s1);
-
-            byte[] r2 = new byte[r1.length + 1];
-            r2[0] = 0;
-            for (int i = 0 ; i < r1.length ; i++) r2[i+1] = r1[i];
-            System.out.println("  rmd: " + toHexString(r2).toUpperCase());
-            
-            byte[] iti = hexStringToByteArray("ab");
-            System.out.println(new String(iti));
-
-            Sha256Hash itiHash = Sha256Hash.of(iti);
-            System.out.println("  iti  "+ itiHash.toString());
-
-            String b1 = "04678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA0B8D578A4C702B6BF11D5F";
-            System.out.println(b1);
-            iti = hexStringToByteArray(b1);
-            itiHash = Sha256Hash.of(iti);
-            System.out.println("  iti  "+ itiHash.toString());
-
-        } catch(Exception ex) {
-            System.out.println(ex.toString());
-            ex.printStackTrace();
+    public static String byteToHexStr(byte[] b1) {
+        StringBuilder strBuilder = new StringBuilder();
+        for(byte val : b1) {
+           strBuilder.append(String.format("%02x", val&0xff));
         }
+        return strBuilder.toString();
     }
 
     /* s must be an even-length string. */
+    //https://stackoverflow.com/questions/140131/convert-a-string-representation-of-a-hex-dump-to-a-byte-array-using-java/140861#140861
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
@@ -294,195 +253,7 @@ public class JWalk01 {
         return data;
     }    
 
-    public void addressFromPubKey( String e ){
-        try {
-
-            String a = e;
-            System.out.println("addressFromPubKey");
-            String[] strArray = a.split(" ");
-            System.out.println(strArray[0]);
-            String ECDA = strArray[0];
-            System.out.println(ECDA.length());
-            byte[] pkArray = ECDA.getBytes();
-            System.out.println("pubkey as bytes: "+Arrays.toString(pkArray));
-
-            System.out.println(pkArray.length);
-            Sha256Hash firstHash = Sha256Hash.of(ECDA.getBytes());
-            System.out.println("  btcj "+ firstHash.toString());
-            MessageDigest sha = MessageDigest.getInstance("SHA-256");
-            byte[] s1 = sha.digest(ECDA.getBytes("UTF-8"));
-            System.out.println("  sha: " + toHexString(s1).toUpperCase());
-
-            MessageDigest rmd = MessageDigest.getInstance("RipeMD160", "BC");
-            byte[] r1 = rmd.digest(s1);
-
-            byte[] r2 = new byte[r1.length + 1];
-            r2[0] = 0;
-            for (int i = 0 ; i < r1.length ; i++) r2[i+1] = r1[i];
-            System.out.println("  rmd: " + toHexString(r2).toUpperCase());            
-
-            byte[] s2 = sha.digest(r2);
-            System.out.println("  sha: " + toHexString(s2).toUpperCase());
-            byte[] s3 = sha.digest(s2);
-            System.out.println("  sha: " + toHexString(s3).toUpperCase());  
-                        
-            byte[] a1 = new byte[25];
-            for (int i = 0 ; i < r2.length ; i++) a1[i] = r2[i];
-            for (int i = 0 ; i < 5 ; i++) a1[20 + i] = s3[i];
-            
-            System.out.println("  adr: " + Base58.encode(a1));
-
-            //byte array to string
-            //byte[] bytes = "hello world".getBytes();
-            byte[] bytes = "04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29".getBytes();
-            //Convert byte[] to String
-            String s = Base64.getEncoder().encodeToString(bytes);             
-            System.out.println(s);
-
-            //System.out.println("  sha: "+encryptionIterator("04CAAA5C0BDDAA22C9D3C0DDAEC8550791891BB2C2FB0F9084D02F927537DE4F443ACED7DEB488E9BFE60D6C68596E6C78D95E20622CC05474FD962392BDC6AF29"));
-            System.out.println("  sha: "+encryptionIterator("thisisatest"));
-
-        } catch(Exception ex) {
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        }
-    }
-    private static MessageDigest sha256;
-    private static String encryptionIterator(String content) {
-        try {
-            sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] passBytes = (content).getBytes();
-            sha256.reset();
-            return bytesToHex2(sha256.digest(passBytes));
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-        }
-        return "";
-    }
-
-    private static String bytesToHex2(byte[] bytes) {
-        System.out.println(" bytesToHex2");
-        //String _LOC = "[SB_UtilityBean: bytesToHex]";
-    
-        StringBuffer result = new StringBuffer();
-        for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
-    
-        return result.toString();
-    }
-
-    static byte[] hash160(byte[] in) {
-        MessageDigest d1;
-        try {
-            d1 = MessageDigest.getInstance("SHA-256");
-        } catch(NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        d1.update(in);
-        byte[] digest = d1.digest();
-        RIPEMD160Digest d2 = new RIPEMD160Digest();
-        d2.update(digest, 0, 32);
-        byte[] ret = new byte[20];
-        d2.doFinal(ret, 0);
-        return ret;
-    }    
-    final protected static char[] hexArray = "0123456789abcdef".toCharArray();
-    public static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for ( int j = 0; j < bytes.length; j++ ) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
-    public static String toHexString(byte[] hash) {
-        BigInteger number = new BigInteger(1, hash);
-        StringBuilder hexString = new StringBuilder(number.toString(16));
-        while (hexString.length() < 64) {
-            hexString.insert(0, '0');
-        }
-        return hexString.toString();
-    }
-
-    private static void convertStringToHex(String str) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        char[] charArray = str.toCharArray();
-
-        for (char c : charArray) {
-            String charToHex = Integer.toHexString(c);
-            stringBuilder.append(charToHex);
-        }
-
-        System.out.println("Converted Hex from String: "+stringBuilder.toString());
-    }
-
-    public String pythonCall01 (String pubKey) {
-        // https://www.tutorialspoint.com/jython/jython_java_application.htm
-        // https://mr-dai.github.io/embedding-jython/
-        System.out.println("pythonCall01 "+pubKey);
-        try {
-            PythonInterpreter interp = new PythonInterpreter();
-            System.out.println("What's up Java Doc?");
-            interp.execfile("pj.py");
-            interp.set("a", new PyInteger(42));
-            interp.exec("print a");
-            interp.exec("x = 2+2");
-            PyObject x = interp.get("x");
-            System.out.println("x: "+x);
-            System.out.println("Goodbye "); 
-            interp.close();       
-        } catch(Exception ex){
-            System.out.println(ex.toString());
-        }
-        return "tbd";
-    }
-
-    public String pythonCall02 (String pubKey) {
-        // https://www.tutorialspoint.com/jython/jython_java_application.htm
-        // https://mr-dai.github.io/embedding-jython/
-        System.out.println("pythonCall02 "+pubKey);
-        try {
-            PythonInterpreter interp = new PythonInterpreter();
-            System.out.println("What's up Java Doc?");
-            PyFunction pf = (PyFunction)interp.get("getAddr");
-            System.out.println(pf.__call__(new PyString("silly wabbit")));
-            interp.close();       
-        } catch(Exception ex){
-            System.out.println(ex.toString());
-        }
-        return "tbd";
-    }
-
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
-
-    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
-        // Static getInstance method is called with hashing SHA
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        // digest() method called
-        // to calculate message digest of an input
-        // and return array of byte
-        return md.digest(input.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public static String toHexString2(byte[] hash) {
-        // Convert byte array into signum representation
-        BigInteger number = new BigInteger(1, hash);
-
-        // Convert message digest into hex value
-        StringBuilder hexString = new StringBuilder(number.toString(16));
-
-        // Pad with leading zeros
-        while (hexString.length() < 32) {
-            hexString.insert(0, '0');
-        }
-
-        return hexString.toString();
-    }
-
-
 }
