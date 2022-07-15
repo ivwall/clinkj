@@ -1,13 +1,6 @@
 package io.crtp.jwalk;
 
-import com.thetransactioncompany.jsonrpc2.client.*;
-import com.thetransactioncompany.jsonrpc2.*;
-import net.minidev.json.*;
-import java.net.*;
-import org.joda.time.LocalDate;
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +14,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 

@@ -28,12 +28,12 @@ public class Block {
 
 	public void setTempASM(String t){
 		tempASM = t;
+		System.out.println(" >>>> block.setTempASM "+ tempASM);                 
 	}
 
 	public String getTempASM(){
 		return tempASM;
 	}
-	
 	
 	public List<String> getTx() {
 		return tx;

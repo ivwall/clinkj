@@ -113,7 +113,7 @@ interface IBitcoinRPC {
     signmessagewithprivkey
     validateaddress
     verifymessage
-
+    
     //Wallet RPCs
     //Note: the wallet RPCs are only available if Bitcoin Core was built with wallet support, which is the default. 
     abandontransaction
@@ -176,8 +176,4 @@ interface IBitcoinRPC {
     walletpassphrasechange
     walletprocesspsbt
      */
-
-
-
-
 }
